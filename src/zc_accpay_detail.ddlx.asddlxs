@@ -1,0 +1,360 @@
+@Metadata.layer: #PARTNER
+@UI: {
+  headerInfo: {
+    typeName: 'Accounts Payable Detail',
+    typeNamePlural: 'Accounts Payable Details',
+    title: {
+      type: #STANDARD,
+      label: 'GL Account Partner Ledger',
+      value: 'GLAccountNumber'
+    },
+    description: {
+      type: #STANDARD,
+      label: 'Business Partner',
+      value: 'BusinessPartner'
+    }
+  },
+  presentationVariant: [{
+    sortOrder: [{
+      by: 'CompanyCode',
+      direction: #ASC
+    }, {
+      by: 'GLAccountNumber',
+      direction: #ASC
+    }, {
+      by: 'BusinessPartner',
+      direction: #ASC
+    }]
+  }]
+}
+
+annotate entity ZC_ACCPAY_DETAIL with
+{
+  // Define facets for object page layout
+  @UI.facet: [
+    {
+      id: 'GeneralInfo',
+      type: #COLLECTION,
+      label: 'General Information',
+      position: 10
+    },
+    {
+      id: 'GeneralInfoGroup',
+      type: #FIELDGROUP_REFERENCE,
+      parentId: 'GeneralInfo',
+      targetQualifier: 'GeneralInfo',
+      position: 10
+    },
+    {
+      id: 'OpeningBalance',
+      type: #COLLECTION,
+      label: 'Opening Balance',
+      position: 20
+    },
+    {
+      id: 'OpeningBalanceGroup',
+      type: #FIELDGROUP_REFERENCE,
+      parentId: 'OpeningBalance',
+      targetQualifier: 'OpeningBalance',
+      position: 10
+    },
+    {
+      id: 'PeriodMovements',
+      type: #COLLECTION,
+      label: 'Period Movements',
+      position: 30
+    },
+    {
+      id: 'PeriodMovementsGroup',
+      type: #FIELDGROUP_REFERENCE,
+      parentId: 'PeriodMovements',
+      targetQualifier: 'PeriodMovements',
+      position: 10
+    },
+    {
+      id: 'ClosingBalance',
+      type: #COLLECTION,
+      label: 'Closing Balance',
+      position: 40
+    },
+    {
+      id: 'ClosingBalanceGroup',
+      type: #FIELDGROUP_REFERENCE,
+      parentId: 'ClosingBalance',
+      targetQualifier: 'ClosingBalance',
+      position: 10
+    },
+    {
+      id: 'LineItems',
+      type: #COLLECTION,
+      label: 'Line Items Detail',
+      position: 50
+    },
+    {
+      id: 'LineItemsGroup',
+      type: #FIELDGROUP_REFERENCE,
+      parentId: 'LineItems',
+      targetQualifier: 'LineItems',
+      position: 10
+    }
+  ]
+
+  // Key Fields Annotations
+  @UI: {
+    lineItem: [{ position: 10, importance: #HIGH, label: 'Company Code' }],
+    identification: [{ position: 10, label: 'Company Code' }],
+    fieldGroup: [{ qualifier: 'GeneralInfo', position: 10, label: 'Company Code' }],
+    selectionField: [{ position: 10 }]
+  }
+  @EndUserText.label: 'Company Code'
+  @Consumption.valueHelpDefinition: [{
+    entity: { name: 'I_CompanyCode', element: 'CompanyCode' },
+    useForValidation: true
+  }]
+  @Consumption.filter: {
+    selectionType: #SINGLE,
+    mandatory: true
+  }
+  CompanyCode;
+
+  // Company Information
+  @UI: {
+    lineItem: [{ position: 13, importance: #MEDIUM, label: 'Company Name' }],
+    fieldGroup: [{ qualifier: 'GeneralInfo', position: 13, label: 'Company Name' }]
+  }
+  @EndUserText.label: 'Company Name'
+  CompanyName;
+
+
+  @UI: {
+    lineItem: [{ position: 30, importance: #HIGH, label: 'Business Partner' }],
+    identification: [{ position: 30, label: 'Business Partner' }],
+    fieldGroup: [{ qualifier: 'GeneralInfo', position: 30, label: 'Business Partner' }],
+    selectionField: [{ position: 20 }]
+  }
+  @EndUserText.label: 'Business Partner'
+  @Consumption.valueHelpDefinition: [{ entity: { name: 'I_BusinessPartner', element: 'BusinessPartner' } }]
+  BusinessPartner;
+
+  // Business Partner Name
+  @UI: {
+    lineItem: [{ position: 35, importance: #HIGH, label: 'Partner Name' }],
+    identification: [{ position: 35, label: 'Business Partner Name' }],
+    fieldGroup: [{ qualifier: 'GeneralInfo', position: 35, label: 'Business Partner Name' }]
+  }
+  @EndUserText.label: 'Business Partner Name'
+  BusinessPartnerName;
+
+  @UI: {
+    lineItem: [{ position: 50, importance: #HIGH, label: 'G/L Account' }],
+    identification: [{ position: 50, label: 'GL Account' }],
+    fieldGroup: [{ qualifier: 'GeneralInfo', position: 50, label: 'G/L Account' }],
+    selectionField: [{ position: 30 }]
+  }
+  @EndUserText.label: 'G/L Account'
+  @Consumption.valueHelpDefinition: [{ entity: { name: 'I_GLAccount', element: 'GLAccount' } }]
+  GLAccountNumber;
+
+
+  @UI: {
+    lineItem: [{ position: 400, importance: #MEDIUM, label: 'Profit Center' }],
+    identification: [{ position: 40, label: 'Profit Center' }],
+    fieldGroup: [{ qualifier: 'GeneralInfo', position: 40, label: 'Profit Center' }]
+  }
+  @EndUserText.label: 'Profit Center'
+  @Consumption.valueHelpDefinition: [{ entity: { name: 'I_ProfitCenter', element: 'ProfitCenter' } }]
+  ProfitCenter;
+
+  @UI: {
+    lineItem: [{ position: 500, importance: #MEDIUM, label: 'Date From' }],
+    identification: [{ position: 50, label: 'Posting Date From' }],
+    fieldGroup: [{ qualifier: 'GeneralInfo', position: 50, label: 'Posting Date From' }],
+    selectionField: [{ position: 50 }]
+  }
+  @EndUserText.label: 'Posting Date From'
+  @Consumption.filter.selectionType: #SINGLE
+  PostingDateFrom;
+
+  @UI: {
+    lineItem: [{ position: 600, importance: #MEDIUM, label: 'Date To' }],
+    identification: [{ position: 60, label: 'Posting Date To' }],
+    fieldGroup: [{ qualifier: 'GeneralInfo', position: 60, label: 'Posting Date To' }],
+    selectionField: [{ position: 60 }]
+  }
+  @EndUserText.label: 'Posting Date To'
+  @Consumption.filter.selectionType: #SINGLE
+  PostingDateTo;
+
+  //  @UI: {
+  //    fieldGroup: [{ qualifier: 'GeneralInfo', position: 80, label: 'Company Address' }],
+  //    lineItem: [{ position: 1000, importance: #LOW, label: 'Company Address' }]
+  //  }
+  //  @EndUserText.label: 'Company Address'
+  //
+  //  CompanyAddress;
+
+  // Opening Balance Fields
+  @UI: {
+    lineItem: [{ position: 80, importance: #HIGH, label: 'Opening Debit Balance In ComCur' }],
+    fieldGroup: [{ qualifier: 'OpeningBalance', position: 10, label: 'Opening Debit Balance In ComCur' }]
+  }
+  @EndUserText.label: 'Opening Debit Balance In ComCur'
+  OpeningDebitBalance;
+
+  @UI: {
+      lineItem: [{ position: 85, importance: #HIGH, label: 'Opening Debit In Transaction Currency' }],
+    lineItem: [{ hidden: false }],
+    fieldGroup: [{ qualifier: 'OpeningBalance', position: 15, label: 'Opening Debit In Transaction Currency' }]
+  }
+  @Consumption.filter.hidden: true
+  OpeningDebitBalanceTran;
+
+  @UI: {
+    lineItem: [{ position: 90, importance: #HIGH, label: 'Opening Credit Balance In ComCur' }],
+    fieldGroup: [{ qualifier: 'OpeningBalance', position: 20, label: 'Opening Credit Balance In ComCur' }]
+  }
+  @EndUserText.label: 'Opening Credit Balance In ComCur'
+  OpeningCreditBalance;
+
+  @UI: {
+      lineItem: [{ position: 100, importance: #HIGH, label: 'Opening Credit In Transaction Currency' }],
+    lineItem: [{ hidden: false }],
+    fieldGroup: [{ qualifier: 'OpeningBalance', position: 25, label: 'Opening Credit In Transaction Currency' }]
+  }
+  @Consumption.filter.hidden: true
+  OpeningCreditBalanceTran;
+
+  //  @UI: {
+  //    lineItem: [{ position: 1000, importance: #HIGH, label: 'Net Opening Balance In ComCur' }],
+  //    fieldGroup: [{ qualifier: 'OpeningBalance', position: 30, label: 'Net Opening Balance In ComCur' }]
+  //  }
+  //  @EndUserText.label: 'Net Opening Balance In ComCur'
+  //  //hide Opening Balance
+  //  OpeningBalance;
+  //
+  //  @UI: {
+  //    lineItem: [{ position: 1100, importance: #HIGH, label: 'Opening Balance In Transaction Currency' }],
+  //    fieldGroup: [{ qualifier: 'OpeningBalance', position: 35, label: 'Opening Balance In Transaction Currency' }]
+  //  }
+  //  OpeningBalanceTran;
+
+  // Period Movement Fields
+  @UI: {
+    lineItem: [{ position: 110, importance: #HIGH, label: 'Debit Amount During Period In ComCur' }],
+    fieldGroup: [{ qualifier: 'PeriodMovements', position: 10, label: 'Debit Amount During Period In ComCur' }]
+  }
+  @EndUserText.label: 'Debit Amount During Period In ComCur'
+  DebitAmountDuringPeriod;
+
+  @UI: {
+      lineItem: [{ position: 115, importance: #HIGH, label: 'Period Debit In Transaction Currency' }],
+    lineItem: [{ hidden: false }],
+    fieldGroup: [{ qualifier: 'PeriodMovements', position: 15, label: 'Debit Amount During Period In TranCur' }]
+  }
+  @Consumption.filter.hidden: true
+  @EndUserText.label: 'Debit Amount During Period In TranCur'
+  DebitAmountDuringPeriodTran;
+
+  @UI: {
+    lineItem: [{ position: 120, importance: #HIGH, label: 'Credit Amount During Period In ComCur' }],
+    fieldGroup: [{ qualifier: 'PeriodMovements', position: 20, label: 'Credit Amount During Period In ComCur' }]
+  }
+  @EndUserText.label: 'Credit Amount During Period In ComCur'
+  CreditAmountDuringPeriod;
+
+  @UI: {
+      lineItem: [{ position: 125, importance: #HIGH, label: 'Period Credit In Transaction Currency' }],
+    lineItem: [{ hidden: false }],
+    fieldGroup: [{ qualifier: 'PeriodMovements', position: 25, label: 'Credit Amount During Period In TranCur' }]
+  }
+  @Consumption.filter.hidden: true
+  @EndUserText.label: 'Credit Amount During Period In TranCur'
+  CreditAmountDuringPeriodTran;
+
+  // hide Closing Balance
+  //  @UI: {
+  //    lineItem: [{ position: 1300, importance: #HIGH, label: 'Closing Balance In Company Code Currency' }],
+  //    fieldGroup: [{ qualifier: 'ClosingBalance', position: 10, label: 'Closing Balance In ComCur' }]
+  //  }
+  //  @EndUserText.label: 'Closing Balance In Company Code Currency'
+  //  ClosingBalance;
+  //
+  //  @UI: {
+  //    lineItem: [{ position: 1301, importance: #HIGH, label: 'Closing Balance In Transaction Currency' }],
+  //    fieldGroup: [{ qualifier: 'ClosingBalance', position: 15, label: 'Closing Balance In Transaction Currency' }]
+  //  }
+  //  @EndUserText.label: 'Closing Balance In Transaction Currency'
+  //  ClosingBalanceTran;
+  //
+  // Closing debit
+  @UI: {
+    lineItem: [{ position: 131, importance: #HIGH, label: 'Closing Debit In Company Currency' }],
+    fieldGroup: [{ qualifier: 'ClosingBalance', position: 20, label: 'Closing Debit In Company Currency' }]
+  }
+  @EndUserText.label: 'Closing Debit In Company Currency'
+  ClosingDebit;
+
+  @UI: {
+      lineItem: [{ position: 132, importance: #HIGH, label: 'Closing Debit In Transaction Currency' }],
+    lineItem: [{ hidden: false }],
+    fieldGroup: [{ qualifier: 'ClosingBalance', position: 25, label: 'Closing Debit In Transaction Currency' }]
+  }
+  @Consumption.filter.hidden: true
+  @EndUserText.label: 'Closing Debit In Transaction Currency'
+  ClosingDebitTran;
+
+  // Closing credit
+  @UI: {
+    lineItem: [{ position: 136, importance: #HIGH, label: 'Closing Credit In Company Currency' }],
+    fieldGroup: [{ qualifier: 'ClosingBalance', position: 30, label: 'Closing Credit In Company Currency' }]
+  }
+  @EndUserText.label: 'Closing Credit In Company Currency'
+  ClosingCredit;
+
+  @UI: {
+      lineItem: [{ position: 137, importance: #HIGH, label: 'Closing Credit In Transaction Currency' }],
+    lineItem: [{ hidden: false }],
+    fieldGroup: [{ qualifier: 'ClosingBalance', position: 35, label: 'Closing Credit In Transaction Currency' }]
+  }
+  @Consumption.filter.hidden: true
+  @EndUserText.label: 'Closing Credit In Transaction Currency'
+  ClosingCreditTran;
+
+  // Currency
+  @UI: {
+    lineItem: [{ position: 140, importance: #HIGH, label: 'Transaction Currency' }],
+    fieldGroup: [{ qualifier: 'GeneralInfo', position: 90, label: 'Transaction Currency' }],
+    selectionField: [{ position: 70 }]
+  }
+  @EndUserText.label: 'Transaction Currency'
+  @Consumption.valueHelpDefinition: [{ entity: { name: 'I_Currency', element: 'Currency' } }]
+  @Consumption.filter: {
+    selectionType: #SINGLE,
+    mandatory: false,
+    defaultValue: ''
+    }
+  TransactionCurrency;
+
+  @UI: {
+    lineItem: [{ position: 150, importance: #LOW, label: 'Company Code Currency' }],
+    fieldGroup: [{ qualifier: 'GeneralInfo', position: 10, label: 'Company Code Currency' }]
+  }
+  @EndUserText.label: 'Company Code Currency'
+  CompanyCodeCurrency;
+
+
+  // Line Items JSON
+  @UI: {
+    fieldGroup: [{ qualifier: 'LineItems', position: 10, label: 'Detailed Line Items (JSON)' }],
+    multiLineText: true,
+    lineItem: [{ position: 1010, importance: #LOW, label: 'Line Item' }]
+  }
+  @EndUserText.label: 'Line Items Detail'
+  LineItemsJson;
+
+  @UI: {
+    lineItem: [{ hidden: true }] }
+  @Consumption.filter.hidden: true
+  RHCUR;
+
+}

@@ -1,0 +1,34 @@
+{
+  "formatVersion": "2",
+  "header": {
+    "description": "Báo cáo chi tiết công nợ phải trả",
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
+  },
+  "generalInformation": {
+    "appType": "ui5",
+    "catalogId": "SAP_TC_UI5_REPO_UIAD",
+    "targetMappingTitle": "Báo cáo chi tiết công nợ phải trả"
+  },
+  "ui5AppDetails": {
+    "appId": "zaccpaydetail"
+  },
+  "navigation": {
+    "targetMappingId": "UI5R_A766DD7C78CEE4628BC28B484A6F4E0BDFCFB81D_TM",
+    "semanticObject": "z_accpay_detail",
+    "action": "display",
+    "desktop": true,
+    "tablet": true,
+    "phone": true
+  },
+  "tiles": [
+    {
+      "id": "UI5R_A766DD7C78CEE4628BC28B484A6F4E0BDFCFB81D_AL",
+      "tileType": "static",
+      "isDefault": true,
+      "standard": {
+        "title": "Báo cáo chi tiết công nợ phải trả"
+      }
+    }
+  ]
+}

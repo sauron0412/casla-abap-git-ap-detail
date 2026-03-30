@@ -1,0 +1,4 @@
+@EndUserText.label: 'Accounts Payable Detail RP Service'
+define service ZSD_ACCPAY_Detail {
+  expose ZC_ACCPAY_DETAIL;
+}
